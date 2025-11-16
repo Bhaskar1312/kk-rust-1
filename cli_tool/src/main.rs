@@ -6,10 +6,24 @@ use clap::Parser;
 struct Cli {
     #[arg(short, long)]
     name: String,
+
+    #[arg(short, long, default_value_t = String::from("Hello"))]
+    greeting: String,
+
+    #[arg(short, long, action = clap::ArgAction::SetTrue)]
+    uppercase: bool,
 }
 
 fn main() {
     let args = Cli::parse();
-    println!("Hello, {}!", args.name);
+
+    let mut message = format!("{}, {}", args.greeting, args.name);
+
+    if args.uppercase {
+        message = message.to_uppercase();
+    }
+
+    println!("{}", message);
 }
 // cargo run -- --name Bhaskar
+// cargo run -- --name Bhaskar --greeting Hi --uppercase
