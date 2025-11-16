@@ -9,6 +9,7 @@ pub struct Cli {
     pub command: Command,
 }
 
+
 #[derive(Subcommand)]
 pub enum Command {
     List {
@@ -17,7 +18,9 @@ pub enum Command {
     }
 }
 
+/// Enum for subcommands under the 'list' 
 #[derive(Subcommand)]
 pub enum ListCommands {
+    /// List all containers
     Containers,
 }

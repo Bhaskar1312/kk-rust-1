@@ -16,3 +16,5 @@ fn main() {
     }
 }
 // cargo run 
+// cargo run --quiet -- list help
+// cargo run -- list containers
