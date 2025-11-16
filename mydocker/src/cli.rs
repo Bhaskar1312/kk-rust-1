@@ -22,5 +22,9 @@ pub enum Command {
 #[derive(Subcommand)]
 pub enum ListCommands {
     /// List all containers
-    Containers,
+    Containers {
+        /// Include stopped containers, short flag -a and long flag --all
+        #[arg(short, long)]
+        all: bool,
+    }
 }

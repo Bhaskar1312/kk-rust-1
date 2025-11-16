@@ -8,9 +8,12 @@ fn main() {
    
    match args.command {
         Command::List { list_command } => match list_command {
-            ListCommands::Containers => {
-                println!("Listing all containers...");
-
+            ListCommands::Containers { all } => {
+                if all {
+                    println!("Listing all containers...");
+                } else {
+                    println!("Listing running containers...");
+                }
             }
         }
     }
@@ -18,3 +21,4 @@ fn main() {
 // cargo run 
 // cargo run --quiet -- list help
 // cargo run -- list containers
+// cargo run -- list containers -a
