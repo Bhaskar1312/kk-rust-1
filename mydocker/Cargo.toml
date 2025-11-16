@@ -1,0 +1,12 @@
+[package]
+name = "mydocker"
+version = "0.1.0"
+edition = "2024"
+publish = ["artifactory"]
+
+[dependencies]
+bollard = { version = "0.19.4", registry = "artifactory" } # for docker 
+clap = { version = "4.5.51", features = ["derive"], registry = "artifactory" } # cli lib
+futures-util = { version = "0.3.31", registry = "artifactory" } #util for async prog
+tokio = { version = "1.48.0",  features =["full"], registry = "artifactory" } #async runtime
+
