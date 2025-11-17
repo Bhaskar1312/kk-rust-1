@@ -3,6 +3,7 @@ use bollard::errors::Error;
 use bollard::models::ContainerSummary;
 use bollard::models::ImageSummary;
 use bollard::container::ListContainersOptions;
+use bollard::container::StartContainerOptions;
 use bollard::image::ListImagesOptions;
 
 pub struct DockerClient {
@@ -36,6 +37,11 @@ impl DockerClient {
 
         let images = self.docker.list_images(options).await?;
         Ok(images)
+    }
+
+    pub async fn start_container(&self, container_name: &str) -> Result<(), Error> {
+        self.docker.start_container(container_name, None::<StartContainerOptions<String>>).await?;
+        Ok(())
     }
 }
 
