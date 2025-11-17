@@ -12,9 +12,16 @@ pub struct Cli {
 
 #[derive(Subcommand)]
 pub enum Command {
+    /// List resources
     List {
+        /// Subcommand for listing resources
         #[command(subcommand)]
         list_command: ListCommands,
+    },
+    /// Start a container
+    Start {
+        /// Name of the container
+        container_name: String,
     }
 }
 

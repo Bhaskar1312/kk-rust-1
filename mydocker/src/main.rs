@@ -47,12 +47,18 @@ async fn main() {
                     }
                 }
             }
+        },
+        Command::Start { container_name } => {
+            println!("Starting container: {}", container_name);
+            
         }
     }
 }
 // cargo run 
+// cargo run --quiet -- help
 // cargo run --quiet -- list help
 // cargo run -- list containers -h
 // cargo run -- list containers 
 // cargo run -- list containers -a
 // cargo run --quiet --  list images
+// cargo run --quiet --  start hello-world
