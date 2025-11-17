@@ -1,9 +1,18 @@
 use env_logger::Builder;
 use log::{ debug, info, warn, error};
 use std::io::Write;
+use std::fs::OpenOptions;
 
 fn main() {
     // env_logger::init();
+
+    let file = OpenOptions::new()
+        .create(true)
+        .write(true)
+        .append(true)
+        .open("output.log")
+        .unwrap();
+
     Builder::new()
         .filter(None, log::LevelFilter::Info) // now even with RUST_LOG=debug, only info and above will be shown
         .format(|buf, record| {
@@ -15,6 +24,7 @@ fn main() {
                 record.args()
             )
         })
+        .target(env_logger::Target::Pipe(Box::new(file)))
         .init();
 
     
