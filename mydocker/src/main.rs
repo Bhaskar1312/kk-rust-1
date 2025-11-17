@@ -53,6 +53,10 @@ async fn main() {
             docker_client.start_container(&container_name).await.unwrap_or_else(|e| {
                 eprintln!("Error starting container {}: {}", container_name, e);
             });
+        },
+        Command::Stop { container_name } => {
+            println!("Stopping container: {}", container_name);
+           
         }
     }
 }
@@ -64,3 +68,4 @@ async fn main() {
 // cargo run -- list containers -a
 // cargo run --quiet --  list images
 // cargo run --quiet --  start angry_chebyshev
+// cargo run --quiet -- stop angry_chebyshev

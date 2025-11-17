@@ -22,6 +22,11 @@ pub enum Command {
     Start {
         /// Name of the container
         container_name: String,
+    },
+    /// Stop a container
+    Stop {
+        /// Name of the container
+        container_name: String,
     }
 }
 
