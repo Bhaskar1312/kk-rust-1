@@ -26,5 +26,7 @@ pub enum ListCommands {
         /// Include stopped containers, short flag -a and long flag --all
         #[arg(short, long)]
         all: bool,
-    }
+    },
+    /// List images
+    Images,
 }

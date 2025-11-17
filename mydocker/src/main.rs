@@ -12,6 +12,7 @@ async fn main() {
    match args.command {
         Command::List { list_command } => match list_command {
             ListCommands::Containers { all } => {
+                println!("Listing containers (all: {})", all);
                 // if all {
                 //     println!("Listing all containers...");
                 // } else {
@@ -30,6 +31,22 @@ async fn main() {
                     }
                 }
             }
+            ListCommands::Images => {
+                println!("Listing images...");
+                // Future implementation for listing images goes here
+                match docker_client.list_images().await {
+                    Ok(images) => {
+                        for image in images {
+                            println!("{}\t{}", 
+                                     image.id, 
+                                     image.repo_tags.join(","));
+                        }
+                    }
+                    Err(e) => {
+                        eprintln!( "Error listing images: {}", e);
+                    }
+                }
+            }
         }
     }
 }
@@ -38,3 +55,4 @@ async fn main() {
 // cargo run -- list containers -h
 // cargo run -- list containers 
 // cargo run -- list containers -a
+// cargo run --quiet --  list images
