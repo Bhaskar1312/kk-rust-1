@@ -4,5 +4,6 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-log = "0.4"
-env_logger = "0.10"
+env_logger = { version = "0.11.8", registry = "artifactory" }
+log = { version = "0.4.28", registry = "artifactory" }
+chrono = { version = "0.4.42", registry = "artifactory" }
