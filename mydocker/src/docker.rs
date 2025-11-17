@@ -4,6 +4,7 @@ use bollard::models::ContainerSummary;
 use bollard::models::ImageSummary;
 use bollard::container::ListContainersOptions;
 use bollard::container::StartContainerOptions;
+use bollard::container::StopContainerOptions;
 use bollard::image::ListImagesOptions;
 
 pub struct DockerClient {
@@ -41,6 +42,13 @@ impl DockerClient {
 
     pub async fn start_container(&self, container_name: &str) -> Result<(), Error> {
         self.docker.start_container(container_name, None::<StartContainerOptions<String>>).await?;
+        Ok(())
+    }
+
+    pub async fn stop_container(&self, container_name: &str) -> Result<(), Error>{
+        self.docker.stop_container(container_name, None::<StopContainerOptions>).await.unwrap_or_else(|e| {
+            eprintln!("Error stopping container {}: {}", container_name, e);
+        });
         Ok(())
     }
 }
