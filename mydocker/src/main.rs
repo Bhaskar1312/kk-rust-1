@@ -60,6 +60,12 @@ async fn main() {
                 eprintln!("Error stopping container {}: {}", container_name, e);
             })
 
+        },
+        Command::Pull { image_name } => {
+            println!("Pulling image: {}", image_name);
+            docker_client.pull_image(&image_name).await.unwrap_or_else(|e| {
+                eprintln!("Error pulling image {}: {}", image_name, e);
+            });
         }
     }
 }
@@ -72,3 +78,5 @@ async fn main() {
 // cargo run --quiet --  list images
 // cargo run --quiet --  start angry_chebyshev
 // cargo run --quiet -- stop angry_chebyshev
+// cargo run --quiet -- pull hello-world
+// cargo run --quiet -- pull k8s.gcr.io/pause:3.9

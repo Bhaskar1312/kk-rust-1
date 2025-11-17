@@ -6,6 +6,9 @@ use bollard::container::ListContainersOptions;
 use bollard::container::StartContainerOptions;
 use bollard::container::StopContainerOptions;
 use bollard::image::ListImagesOptions;
+use bollard::image::CreateImageOptions;
+use futures_util::TryStreamExt;
+
 
 pub struct DockerClient {
     docker: Docker,
@@ -49,6 +52,22 @@ impl DockerClient {
         self.docker.stop_container(container_name, None::<StopContainerOptions>).await.unwrap_or_else(|e| {
             eprintln!("Error stopping container {}: {}", container_name, e);
         });
+        Ok(())
+    }
+
+    pub async fn pull_image(&self, image_name: &str) -> Result<(), Error> {
+        let options = Some(CreateImageOptions{
+                from_image: image_name,
+                ..Default::default()
+            });
+        
+        let mut stream = self.docker.create_image(options, None, None);
+
+        while let Some(msg) = stream.try_next().await? {
+            if let Some(status) = msg.status {
+                println!("{}", status);
+            }
+        }
         Ok(())
     }
 }

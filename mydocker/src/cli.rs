@@ -27,7 +27,12 @@ pub enum Command {
     Stop {
         /// Name of the container
         container_name: String,
-    }
+    },
+    /// Pull an image
+    Pull {
+        /// Name of the image
+        image_name: String,
+    },
 }
 
 /// Enum for subcommands under the 'list' 
