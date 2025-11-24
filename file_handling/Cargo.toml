@@ -1,0 +1,47 @@
+[package]
+name = "file_handling"
+version = "0.1.0"
+edition = "2024"
+publish = ["artifactory"]
+
+[dependencies]
+
+[[bin]]
+name = "create-write-to-file"
+path = "src/create-write-to-file.rs"
+
+[[bin]]
+name = "read-from-file"
+path = "src/read-from-file.rs"
+
+[[bin]]
+name = "append-to-file"
+path = "src/append-to-file.rs"
+
+[[bin]]
+name = "check-file"
+path = "src/check-file.rs"
+
+[[bin]]
+name = "create-dir"
+path = "src/create-dir.rs"
+
+[[bin]]
+name = "copy-file"
+path = "src/copy-file.rs"
+
+[[bin]]
+name = "list-files"
+path = "src/list-files.rs"
+
+[[bin]]
+name = "delete-file"
+path = "src/delete-file.rs"
+
+[[bin]]
+name = "rename-file"
+path = "src/rename-file.rs"
+
+[[bin]]
+name = "read-write-bin"
+path = "src/read-write-bin.rs"
