@@ -1,0 +1,11 @@
+[package]
+name = "kv_store"
+version = "0.1.0"
+edition = "2024"
+publish = ["artifactory"]
+
+[dependencies]
+anyhow = { version = "1.0.100", registry = "artifactory" }
+serde = { version = "1.0.228", features = ["derive"], registry = "artifactory" }
+serde_json = { version = "1.0.145", registry = "artifactory" }
+tokio = { version = "1.48.0", features = ["full"], registry = "artifactory" }
