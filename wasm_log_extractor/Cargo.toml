@@ -1,0 +1,12 @@
+[package]
+name = "wasm_log_extractor"
+version = "0.1.0"
+edition = "2024"
+publish = ["artifactory"]
+
+[dependencies]
+serde = { version = "1.0.228", registry = "artifactory" }
+serde-wasm-bindgen = { version = "0.6.5", registry = "artifactory" }
+wasm-bindgen = { version = "0.2.105", registry = "artifactory" }
+[lib]
+crate-type = ["cdylib", "rlib"]

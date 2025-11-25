@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WebAssembly Log Extractor</title>
+    <style>
+        /* CSS styling for the log extractor interface */
+        .container { margin: 20px; font-family: Arial, sans-serif; }
+        .error { color: red; }
+        .loading { font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h3>Extracted Log:</h3>
+        <pre id="extractedLog"></pre>
+        <!-- Error Message -->
+        <p id="errorMessage" class="error"></p>
+        <!-- Loading Indicator -->
+        <p id="loadingIndicator" class="loading" style="display:none;">Loading...</p>
+        <!-- Log Input Section -->
+        <label for="logInput">Enter Log Message:</label>
+        <input id="logInput" type="text" placeholder="2024-11-22 INFO System started">
+        <button id="extractButton">Extract Log</button>
+    </div>
+    <script type="module">
+        import init, { extract_log } from "./pkg/wasm_log_extractor.js";
+
+
+        // Show loading indicator until the WASM module finishes loading.
+        document.getElementById("loadingIndicator").style.display = "block";
+
+
+        // Initialize the WebAssembly module.
+        init().then(() => {
+            console.log("WASM module loaded.");
+            document.getElementById("loadingIndicator").style.display = "none";
+        }).catch((err) => {
+            console.error("Error loading WASM:", err);
+            document.getElementById("loadingIndicator").innerText = "Failed to load";
+        });
+
+
+        // Extract log when the user clicks the button.
+        document.getElementById("extractButton").addEventListener("click", () => {
+            const logMessage = document.getElementById("logInput").value;
+            const extractedLog = extract_log(logMessage);
+
+
+            // Check if the returned value is a structured LogEntry object.
+            if (typeof extractedLog === 'object' && extractedLog !== null) {
+                const logObj = extractedLog;
+
+
+                if (logObj.timestamp) {
+                    document.getElementById("extractedLog").innerText = `
+Timestamp: ${logObj.timestamp}
+Severity: ${logObj.severity}
+Message: ${logObj.message}
+`;
+                    document.getElementById("errorMessage").innerText = ""; // Clear any existing error
+                } else {
+                    document.getElementById("extractedLog").innerText = "";
+                    document.getElementById("errorMessage").innerText = "Error: Invalid log format returned.";
+                }
+            } else {
+                // Display an error message if an error string was returned.
+                document.getElementById("extractedLog").innerText = "";
+                document.getElementById("errorMessage").innerText = extractedLog;
+            }
+        });
+    </script>
+</body>
+</html>
