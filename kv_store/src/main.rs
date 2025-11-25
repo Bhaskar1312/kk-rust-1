@@ -4,6 +4,8 @@ use tokio::io::{AsyncBufReadExt, AsyncWriteExt, BufReader};
 mod command;
 use command::Command;
 mod store;
+mod persistence;
+
 use std::sync::Arc;
 
 
@@ -13,13 +15,21 @@ async fn main() -> anyhow::Result<()> {
     println!("Server listening on port 6379");
 
     let store = Arc::new(store::KvStore::new());
+    store.load("data.json").await?;
 
+    let store_clone = store.clone();
+    // graceful shutdown handler
+    tokio::spawn(async move {
+        tokio::signal::ctrl_c().await.unwrap();
+        store_clone.save("data.json").await.unwrap();
+        std::process::exit(0);
+    });
 
     loop {
         let (socket, addr) = listener.accept().await?;
         println!("New client: {:?}", addr);
-
         let store = store.clone();
+        
 
         tokio::spawn(async move {
             if let Err(e) = handle_client(socket, store).await {
@@ -65,11 +75,14 @@ async fn handle_client(socket: tokio::net::TcpStream, store: Arc<store::KvStore>
             Command::Delete(key) => {
                 // handle DELETE command
                 // writer.write_all(b"OK\n").await?;
-                if store.delete(&key).await {
-                    writer.write_all(b"OK\n").await?;
-                } else {
-                    writer.write_all(b"(nil)\n").await?;
+                match store.delete(&key).await {
+                    Ok(true) => writer.write_all(b"OK\n").await?,
+                    Ok(false) => writer.write_all(b"(nil)\n").await?,
+                    Err(e) => {
+                        writer.write_all(format!("{}\n", e).as_bytes()).await?;
+                    }
                 }
+
             },
             Command::Unknown => {
                 writer.write_all(b"ERR unknown command\n").await?;
